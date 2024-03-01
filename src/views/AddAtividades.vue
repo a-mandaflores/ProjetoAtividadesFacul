@@ -88,7 +88,7 @@ export default {
         
 
 
-            const url = 'https://script.google.com/macros/s/AKfycbw6UiSmR52lm1WR80wSMOes1uSV8fCKuKho1o-LcvcMzewFKM9EQm9w9IQmuFahnHUT/exec'
+            const url = '/api/macros/s/AKfycbwbXMmYX4BmDpdzRaPv0KDgXv48TnPl_K9b23tIqKeSq2l9fuF3K5li5o4QyCaIuH14/exec'
             const dados = {
                 id: this.id,
                 materia: this.materia,
@@ -102,7 +102,9 @@ export default {
 
             axios.post(url, dados)
                 .then(response => {
-                    console.log(response.data)
+                    console.log(response.status)
+                    //Se os dados salvarem certinho irá redirecionar para a HOME
+                    if(response.status === 200) window.location = "/"
                 })
                 .catch(error => {
             console.error('Erro:', error);
