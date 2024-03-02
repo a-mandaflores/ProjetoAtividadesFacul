@@ -107,8 +107,8 @@ export default {
                     if(response.status === 200) window.location = "/"
                 })
                 .catch(error => {
-            console.error('Erro:', error);
-            });
+                console.error('Erro:', error);
+            }); 
         },
         formatarData(data) {
             const partes = data.split('/');
