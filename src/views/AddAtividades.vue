@@ -102,7 +102,6 @@ export default {
 
             axios.post(url, dados)
                 .then(response => {
-                    console.log(response.status)
                     //Se os dados salvarem certinho irá redirecionar para a HOME
                     if(response.status === 200) window.location = "/"
                 })
