@@ -88,7 +88,7 @@ export default {
         
 
 
-            const url = 'https://script.google.com/macros/s/AKfycbw6UiSmR52lm1WR80wSMOes1uSV8fCKuKho1o-LcvcMzewFKM9EQm9w9IQmuFahnHUT/exec'
+            const url = 'https://script.googleusercontent.com/macros/echo?user_content_key=yRKOQ-vxSl6p7Y4yHSolKzvKEFUv42BA9gMiczWinTdbtJYNKSKkguEniE9EVfgYenaIXik9w3hA3SPV3Ldw7Iet2Qs2w_z-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnMES_0zosxdsYBq0qRMImBOrYKf-n2tGjJAheROd7fWS3lgCjbdg9aKUpEtlxOIidLOpmnvtRzNVl9lD80ttGUgtLfBuYq4ZSw&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo'
             const dados = {
                 id: this.id,
                 materia: this.materia,
@@ -102,11 +102,11 @@ export default {
 
             axios.post(url, dados)
                 .then(response => {
-                    console.log(response.data)
+                    response.data
                 })
                 .catch(error => {
-            console.error('Erro:', error);
-            });
+                console.error('Erro:', error);
+            }); 
         },
         formatarData(data) {
             const partes = data.split('/');
