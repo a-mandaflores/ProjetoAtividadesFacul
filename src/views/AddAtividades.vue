@@ -93,11 +93,11 @@ export default {
                 id: this.id,
                 materia: this.materia,
                 professor: this.professor,
-                atividades: this.atividade,
+                atividade: this.atividade,
                 descritivo: this.descritivo,
                 comoEntregar: this.comoEntregar,
-                data: this.dataEntrega,
-                dataInclusaoSistema: this.dataQueFoiInserido
+                dataEntrega: this.dataEntrega,
+                dataQueFoiInserido: this.dataQueFoiInserido
             }
 
             axios.post(url, dados)
