@@ -2,12 +2,12 @@
     <div class="container">
     <router-link to="/" class="atividades">
     <span class="material-symbols-outlined">edit_note</span>
-    <div v-if="screenWidth >= 450">Atividades</div>
+    <div v-if="screenWidth >= 720">Atividades</div>
     </router-link>
     
     <router-link to="/professores" class="atividades">
     <span class="material-symbols-outlined">groups</span>
-    <div v-if="screenWidth >= 450">Professores</div>
+    <div v-if="screenWidth >= 720">Professores</div>
     </router-link>
     </div>
 </template>

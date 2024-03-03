@@ -202,6 +202,11 @@ export default {
     font-size: 3rem;
     font-weight: 500;
     color: #999;
+}
 
+@media screen and (max-width: 750px) {
+    .atividade input{
+        width:100px
+    }
 }
 </style>

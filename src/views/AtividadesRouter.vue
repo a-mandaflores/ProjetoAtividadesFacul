@@ -144,11 +144,14 @@ export default {
   }
 }
 
-.container {
+.container {  
+  align-items: center;
+    justify-content: center;
+  max-width: 700px;
   overflow: hidden;
   box-shadow: 1px 2px 5px rgb(0, 0, 0, .1);
   border-radius: 8px;
-  margin: 1rem;
+  margin: .5rem;
   background-color: white;
 
   .container-dados {
@@ -228,4 +231,6 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+
 </style>
