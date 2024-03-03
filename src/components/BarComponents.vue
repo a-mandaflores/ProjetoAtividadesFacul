@@ -2,12 +2,12 @@
     <div class="container">
     <router-link to="/" class="atividades">
     <span class="material-symbols-outlined">edit_note</span>
-    <div >Atividades</div>
+    <div v-if="screenWidth >= 450">Atividades</div>
     </router-link>
     
     <router-link to="/professores" class="atividades">
     <span class="material-symbols-outlined">groups</span>
-    <div >Professores</div>
+    <div v-if="screenWidth >= 450">Professores</div>
     </router-link>
     </div>
 </template>
@@ -15,7 +15,22 @@
 <script>
 
 export default {
-    
+    data() {
+        return {
+            screenWidth: window.innerWidth
+        };
+    },
+    created() {
+        window.addEventListener('resize', this.updateScreenWidth);
+    },
+    unmounted() {
+        window.removeEventListener('resize', this.updateScreenWidth);
+    },
+    methods: {
+        updateScreenWidth() {
+            this.screenWidth = window.innerWidth;
+        }
+    }
 
 }
 </script>
@@ -46,4 +61,6 @@ export default {
         color: darkslategrey;
     }
 }
+
+
 </style>

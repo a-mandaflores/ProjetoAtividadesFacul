@@ -1,7 +1,7 @@
 <template>
-    <div class="atividade">
-
-        <div>
+    <div  class="atividade">
+        <div v-show="espernadoSalvar">
+        <div >
             <label  for="materia">Escolha uma opção:</label>
             <select v-model="materia" id="materia" class="materias" >
                 <option value="Padroes de projeto">Padrões de projeto</option>
@@ -25,7 +25,13 @@
         </div>
         <div class="camposNaoPreenchidos" v-if="camposNaoPreenchidos">Campos não preenchidos</div>
         <button @click="adicionar()" class="adicionar">Add</button>
+    
+        </div>
+        <div v-show="salvando" class="salvando">
+            <h1>Salvando...</h1>
+        </div>
     </div>
+    
 </template>
 
 <script>
@@ -43,11 +49,16 @@ export default {
             comoEntregar: '',
             dataEntrega: '',
             dataQueFoiInserido: '',
-            camposNaoPreenchidos: false
+            camposNaoPreenchidos: false,
+            espernadoSalvar: true,
+            salvando: false
         }
     },
     methods: {
         adicionar(){
+            this.espernadoSalvar = false
+            this.salvando = true
+
             let addId = Math.ceil(Math.random()*1000000)
             this.id = addId
 
@@ -102,7 +113,6 @@ export default {
 
             axios.post(url, dados)
                 .then(response => {
-                    //Se os dados salvarem certinho irá redirecionar para a HOME
                     if(response.status === 200) window.location = "/"
                 })
                 .catch(error => {
@@ -183,5 +193,15 @@ export default {
       background-color: rgb(3, 110, 110);
     }
     }
+}
+
+.salvando{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-weight: 500;
+    color: #999;
+
 }
 </style>

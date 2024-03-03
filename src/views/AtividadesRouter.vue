@@ -1,8 +1,11 @@
 <template>
-  <div class="atividades">
+  <div  class="atividades" >
   <router-link to="/AddAtividades">
-  <button class="add-atividades">Add atividades</button>
+  <button v-show="!carregando" class="add-atividades">Add atividades</button>
   </router-link>
+  <div v-if="carregando" class="carregando">
+      <h1>Carregando...</h1>
+    </div>
   <div  v-for="item in data" :key="item.id" class="container">
     <div class="container-atividades">
 
@@ -30,6 +33,7 @@
     keyboard_arrow_{{ flecha }}
     </span>
   </div>
+  </div>
 </template>
 
 <script>
@@ -44,35 +48,37 @@ export default {
             data: null,
             desativar: false,
             flecha: 'down',
-            descriacaoAtivado: null
+            descriacaoAtivado: null,
+            carregando: false
         }
 
     },
-    deletar(atividadeId) {
+    
+    methods: {
+      deletar(atividadeId) {
       if (!confirm("Tem certeza que deseja excluir esta atividade?")) {
         return;
       }
 
-      let id = atividadeId;
-      const url = '/api/macros/s/AKfycbzmBNa2aVCI49Ev3ElSUbQabBnmal8--r-3K-UuOoO6HT7ZIsncxZPeKITw7ZZukiIA/exec';
-      const data = {
-        id: id,
-        method: "DELETE"
-      };
+        let id = atividadeId;
+        const url = '/api/macros/s/AKfycbzmBNa2aVCI49Ev3ElSUbQabBnmal8--r-3K-UuOoO6HT7ZIsncxZPeKITw7ZZukiIA/exec';
+        const data = {
+          id: id,
+          method: "DELETE"
+        };
 
-      axios.post(url, data)
-        .then(response => {
-          if (response.status === 200) {
-            window.location = "/";
-            alert("Atividade excluída com sucesso!");
-          }
-        })
-        .catch(error => {
-          console.error('Erro:', error);
-          alert("Houve um erro ao tentar excluir a atividade.");
-        });
-    },
-    methods: {
+        axios.post(url, data)
+          .then(response => {
+            if (response.status === 200) {
+              window.location = "/";
+              alert("Atividade excluída com sucesso!");
+            }
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            alert("Houve um erro ao tentar excluir a atividade.");
+          });
+      },
       toggleDescritivo(id){
         
         this.flecha = this.flecha == 'down' ? 'up' : 'down'
@@ -82,21 +88,30 @@ export default {
        
       },
       fetchData() {
-        axios.get('https://script.googleusercontent.com/macros/echo?user_content_key=Vy6EvGUuq0je_CczKpww2M5_VrB9QIDiAE5M5N3y-Ly_GUqykYAzzmhsW-EIj2uIWL7O0CulH7Xvg78_Fdg0Ug0Px4IpCOE4m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDycup1rEZ_wYdZUO3j046BUZBtEqHfjMlbOIGu9KfhSqaiKJ70y8wF3pBMtP4p_9wXORJJU_IsdU1wxm5UFG4lOz1Kr4KjXmQ&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo')
+        axios.get('https://script.googleusercontent.com/macros/echo?user_content_key=OWISsDRNdy3GRNe_8HO-Zsw0kjXCBSzivYFut5w8WSAp2YwzQ8rcPSRLOM2Pw8ZcLEV4z0hcefplAG3hoPsfWGTS8WphjwlSm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnNrmaBm7WPgKQL-pOMDTpH_py8n52CHLBbEQXeYllPb6NyuGLyr0BBbyFAPrvpnhYe0_R92WgcQ3hbu-0XWaiAjUM67mHUKvpA&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo')
+          .then(response => {
+            this.data = response.data.data.map(item => ({
+            ...item,
+            dataInclusaoSistema: moment(item.dataInclusaoSistema).format('DD/MM/YYYY'),
+            data: moment(item.data).format('DD/MM/YYYY'),
+          }));
 
-        .then(response => {
-          this.data = response.data.data
-          console.log('chamada ok')
-        })
-        .catch(error => {
-          console.error('Erro na chamada da API:', error);
-        });
+            this.carregando = false
+            console.log('Chamada API bem-sucedida:', response);
+          })
+          .catch(error => {
+            console.error('Erro na chamada da API:', error);
+          });
     },
 
     formatarData(data) {
       return moment(data).format('DD/MM/YYYY');
     },
-  },
+    },
+    mounted() {
+        this.carregando = true
+        this.fetchData();
+    },
 
 }
 </script>
@@ -203,5 +218,14 @@ export default {
   &:hover {
     color: darkcyan;
   }
+}
+
+.carregando{
+  font-size: .5rem;
+  font-weight: 500;
+  color:#999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
