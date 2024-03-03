@@ -1,5 +1,4 @@
 <template>
- 
   <div class="atividades">
   <router-link to="/AddAtividades">
   <button class="add-atividades">Add atividades</button>
@@ -31,9 +30,6 @@
     keyboard_arrow_{{ flecha }}
     </span>
   </div>
-
-</div>
-  
 </template>
 
 <script>
@@ -41,6 +37,8 @@ import moment from 'moment'
 import axios from 'axios'
 
 export default {
+
+
   data(){
         return{
             data: null,
@@ -48,9 +46,31 @@ export default {
             flecha: 'down',
             descriacaoAtivado: null
         }
+
     },
-    mounted(){
-        this.fetchData()
+    deletar(atividadeId) {
+      if (!confirm("Tem certeza que deseja excluir esta atividade?")) {
+        return;
+      }
+
+      let id = atividadeId;
+      const url = '/api/macros/s/AKfycbzmBNa2aVCI49Ev3ElSUbQabBnmal8--r-3K-UuOoO6HT7ZIsncxZPeKITw7ZZukiIA/exec';
+      const data = {
+        id: id,
+        method: "DELETE"
+      };
+
+      axios.post(url, data)
+        .then(response => {
+          if (response.status === 200) {
+            window.location = "/";
+            alert("Atividade excluída com sucesso!");
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          alert("Houve um erro ao tentar excluir a atividade.");
+        });
     },
     methods: {
       toggleDescritivo(id){
@@ -63,6 +83,7 @@ export default {
       },
       fetchData() {
         axios.get('https://script.googleusercontent.com/macros/echo?user_content_key=Vy6EvGUuq0je_CczKpww2M5_VrB9QIDiAE5M5N3y-Ly_GUqykYAzzmhsW-EIj2uIWL7O0CulH7Xvg78_Fdg0Ug0Px4IpCOE4m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDycup1rEZ_wYdZUO3j046BUZBtEqHfjMlbOIGu9KfhSqaiKJ70y8wF3pBMtP4p_9wXORJJU_IsdU1wxm5UFG4lOz1Kr4KjXmQ&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo')
+
         .then(response => {
           this.data = response.data.data
           console.log('chamada ok')
@@ -70,24 +91,24 @@ export default {
         .catch(error => {
           console.error('Erro na chamada da API:', error);
         });
-        },
-
-      formatarData(data) {
-        return moment(data).format('DD/MM/YYYY');
-      },
     },
-    
+
+    formatarData(data) {
+      return moment(data).format('DD/MM/YYYY');
+    },
+  },
+
 }
 </script>
 
 <style lang="scss" scoped>
-.atividades{
+.atividades {
   width: 80%;
   height: 80%;
   display: flex;
   flex-direction: column;
 
-  .add-atividades{
+  .add-atividades {
     letter-spacing: 1px;
     font-weight: 500;
     color: whitesmoke;
@@ -97,36 +118,38 @@ export default {
     margin: 1rem 0 0 1rem;
     border-radius: 5px;
     padding: .5rem;
-    box-shadow: 1px 2px 5px rgb(0, 0, 0,.1);
+    box-shadow: 1px 2px 5px rgb(0, 0, 0, .1);
     background-color: darkcyan;
     transition: .3s ease-in-out;
 
-    &:hover{
+    &:hover {
       background-color: rgb(3, 110, 110);
     }
 
   }
 }
-.container{
+
+.container {
   overflow: hidden;
-  box-shadow: 1px 2px 5px rgb(0, 0, 0,.1);
+  box-shadow: 1px 2px 5px rgb(0, 0, 0, .1);
   border-radius: 8px;
   margin: 1rem;
   background-color: white;
 
-    .container-dados{
+  .container-dados {
     align-items: center;
     display: flex;
     justify-content: space-between;
 
-    
-    .titulo{
+
+    .titulo {
       align-content: baseline;
       margin: 1rem 0 0 1rem;
       font-weight: 600;
       font-size: 1rem;
     }
-    .materia{
+
+    .materia {
       align-content: baseline;
       font-size: .7rem;
       margin: 0 0 0 1rem;
@@ -134,49 +157,51 @@ export default {
 
     }
 
-    .data{
+    .data {
       display: flex;
       align-items: end;
       flex-direction: column;
       margin: 1rem 1rem 0 0;
 
-      h1{
+      h1 {
         align-items: end;
         margin: 0;
         font-weight: 500;
         font-size: .6rem;
       }
-      }
-    
-    }
-  
-    .descritivo.ativado{
-      display: block;
-      margin: 1rem;
-
-      h1, p{
-        margin: 0;
-        font-size: .8rem;
-      }
-      p{
-        margin-bottom: .5rem;
-      }
-      .entrega{
-        font-weight: 400;
-      }
     }
 
-    
   }
 
-.flecha{
+  .descritivo.ativado {
+    display: block;
+    margin: 1rem;
+
+    h1,
+    p {
+      margin: 0;
+      font-size: .8rem;
+    }
+
+    p {
+      margin-bottom: .5rem;
+    }
+
+    .entrega {
+      font-weight: 400;
+    }
+  }
+
+
+}
+
+.flecha {
   font-size: 1rem;
   cursor: pointer;
   margin: 0 1rem .5rem 1rem;
 
-  &:hover{
+  &:hover {
     color: darkcyan;
   }
 }
-
 </style>
