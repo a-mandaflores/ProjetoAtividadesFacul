@@ -1,37 +1,34 @@
 <template>
   <div class="atividades">
-    <router-link to="/AddAtividades">
-      <button class="add-atividades">Add atividades</button>
-    </router-link>
-    <div v-for="item in data" :key="item.id" class="container">
-      <div class="container-atividades">
+  <router-link to="/AddAtividades">
+  <button class="add-atividades">Add atividades</button>
+  </router-link>
+  <div  v-for="item in data" :key="item.id" class="container">
+    <div class="container-atividades">
 
-        <div class="container-dados">
-          <div>
-            <h1 class="titulo"> {{ item.atividades }}</h1>
-            <h1 class="materia"> {{ item.materia }}</h1>
-          </div>
-          <div class="data">
-            <h1> {{ item.dataInclusaoSistema }}</h1>
-            <h1>Entregar até: {{ item.data }}</h1>
-            <button @click="deletar(item.id)" class="deletar">Excluir</button>
-          </div>
-        </div>
-
-        <div v-show="desativar" class="descritivo ativado">
-          <h1>Descritivo:</h1>
-          <p> {{ item.descritivo }} </p>
-
-          <h1>Entrega: <span class="entrega"> {{ item.comoEntregar }}</span> </h1>
-        </div>
-      </div>
-
-
-      <span @click="toggleDescritivo" class="material-symbols-outlined flecha">
-        keyboard_arrow_{{ flecha }}
-      </span>
+    <div class="container-dados">
+    <div >
+    <h1 class="titulo"> {{ item.atividades }}</h1>
+    <h1 class="materia"> {{  item.materia }}</h1>
+    </div>
+    <div class="data">
+    <h1> {{ item.dataInclusaoSistema }}</h1>
+    <h1>Entregar até: {{ item.data }}</h1>
+    </div>
     </div>
 
+    <div v-show="item.id === descriacaoAtivado" class="descritivo ativado">
+    <h1>Descritivo:</h1>
+    <p> {{ item.descritivo }} </p>
+  
+    <h1>Entrega: <span class="entrega"> {{ item.comoEntregar }}</span> </h1>
+    </div>
+    </div>
+
+
+    <span @click="toggleDescritivo(item.id)" class="material-symbols-outlined flecha">
+    keyboard_arrow_{{ flecha }}
+    </span>
   </div>
 </template>
 
@@ -40,20 +37,16 @@ import moment from 'moment'
 import axios from 'axios'
 
 export default {
-  data() {
-    return {
-      data: null,
-      desativar: false,
-      flecha: 'down'
-    }
-  },
-  mounted() {
-    this.fetchData()
-  },
-  methods: {
-    toggleDescritivo() {
-      this.desativar = !this.desativar
-      this.flecha = this.flecha === 'down' ? 'up' : 'down';
+
+
+  data(){
+        return{
+            data: null,
+            desativar: false,
+            flecha: 'down',
+            descriacaoAtivado: null
+        }
+
     },
     deletar(atividadeId) {
       if (!confirm("Tem certeza que deseja excluir esta atividade?")) {
@@ -79,10 +72,21 @@ export default {
           alert("Houve um erro ao tentar excluir a atividade.");
         });
     },
-    fetchData() {
-      axios.get('https://script.googleusercontent.com/macros/echo?user_content_key=t0kumuzX-my9yam_oxa9WLCdbuNW4mvDeRSB8PPVwpnQc073mcp3HzokuNfBuyjqyCZjoArU_s2hcj7vVy7AvlPj99ITsSw9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGf4CARMbdcEnqe17e2XfjXpDAdenDpu_KaDRkJAW6qPZomw6v-wBvhWXKorAS6V0OqR06g9uDRSyATdGUbC03ZGOPiqWigitA&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo')
+    methods: {
+      toggleDescritivo(id){
+        
+        this.flecha = this.flecha == 'down' ? 'up' : 'down'
+        
+        this.descriacaoAtivado = this.descriacaoAtivado === id ? null : id
+        
+       
+      },
+      fetchData() {
+        axios.get('https://script.googleusercontent.com/macros/echo?user_content_key=Vy6EvGUuq0je_CczKpww2M5_VrB9QIDiAE5M5N3y-Ly_GUqykYAzzmhsW-EIj2uIWL7O0CulH7Xvg78_Fdg0Ug0Px4IpCOE4m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDycup1rEZ_wYdZUO3j046BUZBtEqHfjMlbOIGu9KfhSqaiKJ70y8wF3pBMtP4p_9wXORJJU_IsdU1wxm5UFG4lOz1Kr4KjXmQ&lib=M1WAHNAaucDFJNC7pji_pzSZrDaw7s3jo')
+
         .then(response => {
           this.data = response.data.data
+          console.log('chamada ok')
         })
         .catch(error => {
           console.error('Erro na chamada da API:', error);
